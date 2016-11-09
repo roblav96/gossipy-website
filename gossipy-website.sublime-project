@@ -1,0 +1,8 @@
+{
+	"folders": [{
+		"path": "./",
+		"folder_exclude_patterns": ["node_modules", "img", "dist"],
+		"file_exclude_patterns": [".*"]
+	}]
+}
+

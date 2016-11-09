@@ -1,17 +1,24 @@
 // 
 
-var path = require('path')
-var webpack = require('webpack')
+var Path = require('path')
+var Webpack = require('webpack')
+var CopyWebpackPlugin = require('copy-webpack-plugin')
+var PrerenderSpaPlugin = require('prerender-spa-plugin')
 
 
 
 module.exports = {
 	entry: './src/main.js',
 	output: {
-		path: path.resolve(__dirname, './dist'),
+		path: Path.resolve(__dirname, './dist'),
 		publicPath: '/dist/',
 		filename: 'build.js'
 	},
+	// entry: ['./src/main.js'],
+	// output: {
+	// 	path: './dist',
+	// 	filename: '[name].js'
+	// },
 	module: {
 		rules: [{
 			test: /\.vue$/,
@@ -47,19 +54,26 @@ if (process.env.NODE_ENV === 'production') {
 	module.exports.devtool = '#source-map'
 		// http://vue-loader.vuejs.org/en/workflow/production.html
 	module.exports.plugins = (module.exports.plugins || []).concat([
-		new webpack.DefinePlugin({
+		new Webpack.DefinePlugin({
 			'process.env': {
 				NODE_ENV: '"production"'
 			}
 		}),
-		new webpack.optimize.UglifyJsPlugin({
+		new Webpack.optimize.UglifyJsPlugin({
 			compress: {
 				warnings: false
 			}
 		}),
-		new webpack.LoaderOptionsPlugin({
+		new Webpack.LoaderOptionsPlugin({
 			minimize: true
-		})
+		}),
+		// new CopyWebpackPlugin([{
+		// 	from: '.',
+		// 	to: './dist'
+		// }]),
+		new PrerenderSpaPlugin(
+			Path.join(__dirname, 'dist'), ['/']
+		),
 	])
 }
 
